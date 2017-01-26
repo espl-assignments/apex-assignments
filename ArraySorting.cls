@@ -1,96 +1,53 @@
+/*3. Method which will accept array of integers as parameters write a code to
+a. Sort the array in ascending order
+b. Sort the array in descending order
+c. Print the Maximum number in the array
+d. Print the Minimum number in the array
+e. Print duplicates and its occurrences in the array*/
+
+//a. Sort the array in ascending order
 public class ArraySorting{
-	public static void ascendingOrder(List<Integer> values){
-		List<Integer> integerArray = new List<Integer>(values);
-		for(Integer i = 0 ; i < integerArray.size() ; i ++) {
-			for(integer j = i+1 ; j <= integerArray.size() -1 ; j ++ ){
-  				integer temporaryVariable = 0 ;
-  				if(integerArray[i] >  integerArray[j]){
-   					temporaryVariable = integerArray[i];
-   					integerArray[i] = integerArray[j];
-   					integerArray[j] = temporaryVariable;
-				}
-			}
+	public static void arrayOrder(){
+		Integer[] arrayList = new List<Integer> {2,2,3,3,3,4};
+		
+		//Sort the array in ascending order
+		arrayList.sort();
+		System.debug('Ascending Order: '+ arrayList);
+		
+		//Sort the array in descending order
+		Integer[] descList = new List<Integer>();
+		for(Integer i = arrayList.size() - 1 ; i >= 0; i--){
+			descList.add(arrayList.get(i));
 		}
-		System.debug(integerArray);
-	}
-	
-	public static void descendingOrder(List<Integer> elements){
-		List<Integer> arrayList = new List<Integer>(elements);
-		for(Integer i = 0 ; i < arrayList.size() ; i ++) {
-			for(integer j = i+1 ; j <= arrayList.size() -1 ; j ++ ){
-  				integer temporary_Var = 0 ;
-  				if(arrayList[i] <  arrayList[j]){
-   					temporary_Var = arrayList[i];
-   					arrayList[i] = arrayList[j];
-   					arrayList[j] = temporary_Var;			
-				}
-			}
+		System.debug('Descending Order: '+ descList);
+		
+		// Print the Maximum number in the array
+		Integer maxNo = descList[0];
+		for(Integer temp = 0 ; temp < descList.size() ; temp++){
+			if(descList[temp] > maxNo)
+				maxNo = descList[temp];
 		}
-		System.debug(arrayList);
-	}
-	
-	
-	public static void maximumNumber(List<Integer> elementList){
-		List<Integer> arrayElements = new List<Integer>(elementList);
-		for(Integer i = 0 ; i < arrayElements.size() -1 ; i++ ){
-  			integer temp_Var = 0 ;
-  			if(arrayElements[i] >  arrayElements[i+1]){
-   				temp_Var = arrayElements[i];
-   				arrayElements[i] = arrayElements[i+1];
-   				arrayElements[i+1] = temp_Var;
-			}
-		}			
-		System.debug(arrayElements[arrayElements.size()-1]);
-	}
+		System.debug('Max Number: '+maxNo);
+		
+		// Print the Minimum number in the array
+		Integer minNo = arrayList[0];
+		for(Integer temp = 0 ; temp < descList.size() ; temp++){
+			if(arrayList[temp] < minNo)
+				minNo = arrayList[temp];
+		}
+		System.debug('Min Number: '+minNo);
+    	
+    	//Print duplicates and its occurrences in the array
+    	Map<Integer,Integer> elCount = new Map<Integer,Integer>(); 
 
-	public static void minimumNumber(List<Integer> numbers){
-		List<Integer> arrayNumbers = new List<Integer>(numbers);
-		for(Integer i = 0 ; i < arrayNumbers.size() -1 ; i++ ){
-  			integer temp_Var1 = 0 ;
-  			if(arrayNumbers[i] <  arrayNumbers[i+1]){
-   				temp_Var1 = arrayNumbers[i];
-   				arrayNumbers[i] = arrayNumbers[i+1];
-   				arrayNumbers[i+1] = temp_Var1;
-			}
+		for(Integer key : arrayList)
+		{
+    		if(!elCount.containsKey(key)){
+    			elCount.put(key,0);
+    		}
+    	Integer currentInt=elCount.get(key)+1;
+    		elCount.put(key,currentInt);
 		}
-		System.debug(arrayNumbers[arrayNumbers.size()-1]); 
-	}
-
-public static void arrayDigitOccurrence(List<Integer> digits){
-		List<Integer> arrayIntegers = new List<Integer>(digits);
-		Integer counter = 1;
-		Map<Integer,Integer> myMap = new Map<Integer,Integer>(); 
-		Integer i;
-		for(i=0 ; i < 5; i++){
-			if(myMap.containsKey(arrayIntegers[i])){
-				counter++;
-				myMap.put(arrayIntegers[i],counter);
-			}
-			else{
-				myMap.put(arrayIntegers[i],counter);
-			}
-		}
-		System.debug(myMap);
-	}
+		System.debug(elCount);
+	}	
 }
-
-
-
-
-/*
-List<Integer> integerList = new List<integer>{1,20,10,5,1} ;
-
-System.debug('Ascending order: ');
-ArraySorting.ascendingOrder(integerList);
-
-System.debug('Descending order: ');
-ArraySorting.descendingOrder(integerList);
-
-System.debug('Maximum Number: ');
-ArraySorting.maximumNumber(integerList);
-
-System.debug('Minimum Number: ');
-ArraySorting.minimumNumber(integerList);
-
-System.debug('Repeating Number: ');
-ArraySorting.arrayDigitOccurrence(integerList); */
