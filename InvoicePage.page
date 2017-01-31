@@ -1,0 +1,61 @@
+<apex:page renderAs="pdf" standardController="Invoice_Statement__c" extensions="InvoiceController" showHeader="false" sidebar="false">
+    <apex:form >
+    <H1 style="float:right;color:blue">INVOICE</H1><br/><br/><br/><br/><br/>
+    <apex:panelGrid columns="2" id="theGrid" border="1" style="float:right" >
+      <apex:outputText value="Invoice #" id="theFirst" style="width:50%; font-size:16px; font-weight: 900; color:lightblue; text-align:center;"/>
+      <apex:outputText value="Date" id="theSecond"/>
+      <apex:outputText value="{!Invoice_Statement__c.name}" id="theThird"/>
+      <apex:outputText value="{!Invoice_Statement__c.Date__c}" id="theFourth"/>
+    </apex:panelGrid>
+    <panelgrid column="1" >
+      <apex:outputText value="{!$Organization.Name}"/><br/>
+      <apex:outputText value="{!$Organization.Street}"/><br/>
+      <apex:outputText value="{!$Organization.City}"/>&nbsp;
+      <apex:outputText value="{!$Organization.State}"/>&nbsp;
+      <apex:outputText value="{!$Organization.PostalCode}"/><br/>
+      Phone: &nbsp;<apex:outputText value="{!$Organization.Phone}"/><br/>
+    </panelgrid>
+    <br/>
+    <br/>
+    <panelgrid column="1" >
+      BILL TO,
+      <br/>
+      <apex:outputText value="{!Invoice_Statement__c.Account_Name__r.Name}"/><br/>
+      <apex:outputText value="{!Invoice_Statement__c.Account_Name__r.BillingStreet}"/><br/>
+      <apex:outputText value="{!Invoice_Statement__c.Account_Name__r.BillingCity}"/>&nbsp;
+      <apex:outputText value="{!Invoice_Statement__c.Account_Name__r.BillingState}"/>&nbsp;
+      <apex:outputText value="{!Invoice_Statement__c.Account_Name__r.BillingPostalCode}"/><br/>
+      <apex:outputText value="{!Invoice_Statement__c.Account_Name__r.Phone}"/><br/>
+      
+      </panelgrid>
+      <br/>
+      <br/>
+      <center>
+      <apex:pageblock >
+        <apex:pageBlockTable value="{!Invoice_Statement__c.Line_Items__r}" width="700" var="i" border="1">
+            <apex:column value="{!i.Item__c}" width="500">
+            <apex:facet name="footer" >
+            <apex:outputText >Thank you for your business!</apex:outputText>
+            </apex:facet>
+            </apex:column>
+            <apex:column value="{!i.Amount__c}" width="200">
+            <apex:facet name="footer" >
+            <apex:outputText value="${!amount}"/>
+            </apex:facet>
+            </apex:column>
+        </apex:pageBlockTable>
+
+        </apex:pageBlock>
+      </center>
+    <br/>
+  <br/>
+    <panelGrid columns="1">
+      <center>
+        If you have any questions about this invoice,please contact<br/>
+        <apex:outputText value="{!$Organization.Name}"/>,
+        <apex:outputText value="{!$Organization.Phone}"/>,
+        <apex:outputText >help@eternussolutions.com</apex:outputText>
+      </center>
+    </panelGrid>
+    </apex:form>
+</apex:page>
