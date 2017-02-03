@@ -3,21 +3,22 @@ information in map and display the same.*/
 
 public class LeadCount{
 	public static void getLeadCount(){
-		Map<String,Integer> myMap = new Map<String,Integer>();
-		List<aggregateResult> results = [Select LeadSource,count(Status) total from Lead group by LeadSource];
-		String key;
-		Integer val;
-		for (AggregateResult ar : results){
-			key=(String)ar.get('LeadSource');
-			val=(Integer)ar.get('total');
-			if(!myMap.containsKey(key)){
-					myMap.put(key,val);
-			}
-		}	
-			for(String myMap1 : myMap.keySet()){
-				System.debug(myMap1+' '+myMap.get(myMap1));
-			}
-			
-  			//System.debug(ar.get('leadsource')+'-'+ar.get('total'));
-	}
+		String key,keys;
+      	Integer value,values;
+      	
+      	map<String,Integer> innerMap = new  map<String,Integer>(); //Inner map
+      	
+      	map<String,map<String,Integer>> outerMap = new map<String,map<String,Integer>>(); //Outer Map
+      	
+       	AggregateResult[] record =  [SELECT count(Id) total,Status,LeadSource from Lead group by Status,LeadSource];
+       	
+        for(AggregateResult result : record){
+            key=(String)result.get('Status');
+            value=(Integer)result.get('total');
+			innerMap.put(key,value); //Putting values in innner map.
+            keys=(String)result.get('LeadSource');
+			outerMap.put(keys,innerMap); //Putting values in the outer map.
+        }   
+       system.debug(outerMap); //Print the map
+    }
 }
