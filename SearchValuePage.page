@@ -1,0 +1,41 @@
+<apex:page Controller="SearchValueController">
+	
+	<apex:form >
+		<apex:pageBlock >
+  			<apex:inputText value="{!searchString}"/>
+    		<apex:commandButton value="Search" action="{!explore}" status="actStatusId" reRender="refresh"/>
+    		<apex:actionStatus id="actStatusId"> </apex:actionStatus>
+    	</apex:pageBlock>
+    	
+		<apex:outputPanel title="" id="refresh" >
+			<apex:pageMessages > </apex:pageMessages>
+   			<apex:pageBlock title="Accounts" id="acct" rendered="{!IF(accountList != NULL && accountList.size > 0, TRUE ,FALSE)}">
+    			<apex:pageblockTable value="{!accountList}" var="acc">
+          			<apex:column value="{!acc.name}"/>
+       			</apex:pageblockTable>
+    		</apex:pageBlock>
+ 
+ 			<apex:pageBlock title="Contacts" id="cont" rendered="{!IF(contactList != NULL && contactList.size > 0, TRUE ,FALSE)}">
+    			<apex:pageblockTable value="{!contactList}" var="con">
+      				<apex:column value="{!con.name}"/>
+      				<apex:column value="{!con.firstname}"/>
+      				<apex:column value="{!con.lastname}"/>
+ 				</apex:pageblockTable>
+			</apex:pageBlock>
+
+			<apex:pageBlock title="Leads" id="lead" rendered="{!IF(leadList != NULL && leadList.size > 0, TRUE ,FALSE)}">
+    			<apex:pageblockTable value="{!leadList}" var="lead1">
+      				<apex:column value="{!lead1.name}"/>
+      				<apex:column value="{!lead1.firstname}"/>
+      				<apex:column value="{!lead1.lastname}"/>
+ 				</apex:pageblockTable>
+			</apex:pageBlock>
+  
+			<apex:pageBlock title="Opportunities" id="oppt" rendered="{!IF(opportunityList != NULL && opportunityList.size > 0, TRUE ,FALSE)}">
+    			<apex:pageblockTable value="{!opportunityList}" var="opty">
+      				<apex:column value="{!opty.name}"/>
+ 				</apex:pageblockTable>
+			</apex:pageBlock>
+		</apex:outputPanel>
+	</apex:form>
+</apex:page>
