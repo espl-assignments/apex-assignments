@@ -12,30 +12,54 @@
  
 @isTest
 private class DuplicateContacts {
-	 @testSetUp
-	 	static void setup() {
-	 	List<Contact> testConts = new List<Contact>();
-		for(Integer i=0;i<2;i++) {
-			testConts.add(new Contact(LastName = 'TestConts'+i , Phone = '555-1212' , Email = 'TestConts'+i+'@gmail.com'));
- 		}
- 	insert testConts;
-	 }
-	 
- 	@isTest static void testMethod1() {
-		List<Contact> con = [select id, LastName, Phone, Email from Contact];
-		Contact cont = new Contact(LastName = 'TestConts0', Phone = '555-1212' , Email = 'TestConts0@gmail.com');
+ 	@isTest static void contactDuplicateCheck_PhoneDupSenario() {
+		
+		Contact con = new Contact(LastName = 'TestConts0', Phone = '555-1212' , Email = 'TestConts0@gmail.com');
+		Contact cont = new Contact(LastName = 'TestConts0', Phone = '555-1212' , Email = 'TestConts00@gmail.com');
 		Test.startTest();
+		insert con;
+		try{
 			insert cont;
+		}
+		catch(Exception e){
+			System.assert(e.getMessage().contains('Duplicate Phone'));
+		}
+		List<Contact> con1 = [select id, LastName, Phone, Email from Contact where Phone = '555-1212'];
 		Test.stopTest();
-		System.assertEquals(con[0],cont);
+		System.assertEquals(1,con1.size());
     }
  	
- 	@isTest static void testMethod2() {
-		List<Contact> con = [select id, LastName, Phone, Email from Contact];
-		Contact cont = new Contact(LastName = 'TestConts00', Phone = '555-0512' , Email = 'TestConts00@gmail.com');
+ 	@isTest static void contactDuplicateCheck_EmailDupSenario() {
+		Contact con = new Contact(LastName = 'TestConts0', Phone = '555-1212' , Email = 'TestConts0@gmail.com');
+		Contact cont = new Contact(LastName = 'TestConts0', Phone = '555-0212' , Email = 'TestConts0@gmail.com');
 		Test.startTest();
+		insert con;
+		try{
 			insert cont;
+		}
+		catch(Exception e){
+			System.assert(e.getMessage().contains('Duplicate Email'));
+		}
+		List<Contact> con1 = [select id, LastName, Phone, Email from Contact where Email = 'TestConts0@gmail.com'];
 		Test.stopTest();
-		System.assertEquals(con[0],cont);
+		System.assertEquals(1,con1.size());
     }
+    
+    @isTest static void contactDuplicateCheck_PhoneEmailDupSenario() {
+		Contact con = new Contact(LastName = 'TestConts0', Phone = '555-1212' , Email = 'TestConts0@gmail.com');
+		Contact cont = new Contact(LastName = 'TestConts0', Phone = '555-1212' , Email = 'TestConts0@gmail.com');
+		Test.startTest();
+		insert con;
+		try{
+			insert cont;
+		}
+		catch(Exception e){
+			System.assert(e.getMessage().contains('Duplicate Email'));
+		}
+		List<Contact> con1 = [select id, LastName, Phone, Email from Contact where Phone = '555-1212'and Email = 'TestConts0@gmail.com'];
+		Test.stopTest();
+		System.assertEquals(1,con1.size());
+    }
+    
+    
 }
