@@ -7,14 +7,15 @@ Contact Duplicate Check Trigger:
 */
 
 trigger CheckDuplicateContacts on Contact (before insert) { 
-	CheckDuplicateContactsHelper chelper = new CheckDuplicateContactsHelper();
-	Trigger_Settings__c ts = Trigger_Settings__c.getInstance( UserInfo.getUserID() );
+	
+	Trigger_Settings__c ts = Trigger_Settings__c.getInstance( UserInfo.getUserID());
+	
 	// Disable the trigger through custom settings.
 	if( ts.Disable_Trigger__c ) 
+	{
 		return;
-		
-    if(Trigger.isBefore && Trigger.isInsert)
-    {	// Now call your helper method
-        chelper.validateContact(Trigger.new);
-    }
+	}
+	
+	CheckDuplicateContactsHelper chelper = new CheckDuplicateContactsHelper();
+	chelper.validateContact(Trigger.new);
 }
