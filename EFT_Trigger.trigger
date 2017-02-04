@@ -27,12 +27,9 @@ trigger EFT_Trigger on EFT_Transaction_Status__c (after insert) {
 	
     Trigger_Settings__c ts = Trigger_Settings__c.getInstance( UserInfo.getUserID() );
 	//Disable the trigger through custom settings.
-	if( ts.Disable_EFT_Trigger__c) 
+	if( ts.Disable_EFT_Trigger__c){
 		return;
-		
-    if(Trigger.isAfter && Trigger.isInsert)
-    {
-        // call the helper method.
-        EFT_Trigger_Helper.createCaseWhenNeeded(Trigger.new);
-    }
+	}	
+	EFT_Trigger_Helper.createCaseWhenNeeded(Trigger.new);
+   
 }
