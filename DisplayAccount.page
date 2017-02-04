@@ -1,0 +1,41 @@
+<apex:page Controller="DisplayAccountController">
+	<apex:form >
+  		<apex:pageBlock >
+  			<apex:pageBlockTable value="{!accountList}" var="a">
+				<apex:column headerValue="Name">
+  					<apex:commandLink action="{!selectAccount}" reRender="refresh">
+						<apex:param name="conlst" value="{!a.id}"/>
+						<apex:outputText value="{!a.name}"/>
+					</apex:commandlink>
+				</apex:column>
+			</apex:pageBlockTable>
+		</apex:pageBlock>	
+	</apex:form>
+	
+			<!--accounts-->
+		<apex:pageBlock id="refresh">
+    		<apex:pageBlockTable value="{!accounts1}" var="a" rendered="{!IF(accounts1 != NULL && accounts1.size > 0, TRUE ,FALSE)}">
+    			<apex:column headerValue="AccountName" value="{!a.Name}"/>
+    			<apex:column headerValue="Address" value="{!a.BillingCity}" />
+    			<apex:column headerValue="Phone" value="{!a.Phone}"/>
+    			
+   			 	<!--contacts -->
+    			<apex:column headerValue="ContactName" rendered="{!IF(a.contacts != NULL && a.contacts.size > 0, TRUE ,FALSE)}">
+   					<apex:pageBlockTable value="{!a.contacts}" var="c">
+  						<apex:column headerValue="ContactName">
+  							<apex:outputText value="{!c.lastname}"> </apex:outputText>
+  						</apex:column>
+  					</apex:pageBlockTable> <!-- End contact-->
+  				</apex:column>
+  				
+  				<!--opportunities -->
+  				<apex:column headerValue="Opportunity Name" rendered="{!IF(a.opportunities != NULL && a.opportunities.size > 0, TRUE ,FALSE)}"> 
+  					<apex:pageBlockTable value="{!a.opportunities}" var="p">
+  						<apex:column headerValue="Opportunity Name">
+  							<apex:outputText value="{!p.name}">	</apex:outputText>
+  						</apex:column>
+  					</apex:pageBlockTable> <!-- End opportunity-->
+  				</apex:column>
+ 			</apex:pageBlockTable> <!--end account-->
+  		</apex:pageBlock>
+</apex:page>
