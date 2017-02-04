@@ -11,11 +11,18 @@
  **************************************************************************************************/
 public with sharing class CheckDuplicateContactsHelper {
 	public void validateContact(List <Contact> contactlist){
-		List<Contact> contacts = new List<Contact>();
+		List<Contact> contacts = [Select Phone, Email from Contact];
 		for (Contact c : contactlist){
-			contacts= [select id from Contact where (Phone=:c.Phone or Email =:c.Email)];
-			if (contacts.size() > 0) {
-				c.addError('Contact cannot be created: Contact already exists with the same email or phone combination');
+			for(Contact c1: contacts){
+				if(c1.Phone == c.Phone && c1.Email == c.Email){
+					c.addError('Contact cannot be created: Contact already exists with the same email and phone combination');
+				}
+				if(c1.Phone == c.Phone){
+					c.addError('Contact cannot be created: Contact already exists with the same phone');
+				}
+				if(c1.Email == c.Email){
+					c.addError('Contact cannot be created: Contact already exists with the same email');
+				}
 			}
 		} 
 	}  
