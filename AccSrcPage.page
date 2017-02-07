@@ -1,6 +1,9 @@
 <apex:page controller="AccSrcController">
 	<apex:form >
-	<apex:image value="{!URLFOR($Resource.MyResource,'Psters/A9RA392.jpg')}" />
+		<apex:image value="{!URLFOR($Resource.MyResources1,'/cloud.jpg')}" />
+		<apex:includeScript value="{!URLFOR($Resource.MyResources1,'/jquery-3.1.1.js')}" />
+		<apex:includeScript value="{!URLFOR($Resource.MyResources1,'/remotingDelete.js')}" />
+	
 		<apex:pageBlock title="Search Account" id="block">
 			<apex:inputText value="{!searchstring}" label="Input"/>   
   				<apex:commandButton value="Search records" action="{!search}"/>
@@ -74,17 +77,5 @@
 						document.getElementById('nodata').style.display = "block";
 					}
 					
-					function delAccountRemoting(accId) {
- 						Visualforce.remoting.Manager.invokeAction(
- 							'{!$RemoteAction.AccSrcController.delAccount}',accId, 
- 								function(result, event){
- 									if (event.status) {
- 										alert('The account has been deleted..');
- 										window.reload();
- 									} 
- 								}, 
- 								{escape: true}
- 						);
- 					}
 				</script>
 </apex:page>
