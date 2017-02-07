@@ -30,10 +30,9 @@ public class CalculatorDemo{
 				return(inp1 / inp2);  
 			}
 		}catch(MathException e){  
-            	System.debug('Exception Condition : Program is ending ');  
+            	System.debug(e);  
         }
-		return null;
-			
+		return null;		
 	}
 }
 
