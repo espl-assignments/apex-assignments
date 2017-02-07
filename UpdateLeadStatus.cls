@@ -5,9 +5,10 @@ public class UpdateLeadStatus{
 		String newStatus = 'Closed - Converted';
 		List<Lead> leadList = new List<Lead>();
 		List<Lead> updateLead = [SELECT Id, Name,Status FROM Lead where Status='Open - Not Contacted'];
-		for (Lead leadList1: updateLead){
-        	leadList1.Status=newStatus;
-        	update LeadList1;
+		for (Lead l : updateLead){
+        	l.Status=newStatus;
+        	leadList.add(l);
     	}	
+    	update leadList;
 	}
 }
