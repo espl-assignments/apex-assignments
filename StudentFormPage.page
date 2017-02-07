@@ -1,0 +1,30 @@
+<apex:page controller="StudentFormController" language="{!IF(ISNULL(lang),'en_US',lang)}">  
+  <apex:form >
+    <apex:pageMessages /> <!-- this is where the error messages will appear -->
+    
+    <apex:selectList value="{!langlist}" size="1">
+    	<apex:actionSupport event="onchange" action="{!change}"/>
+     	<apex:selectOptions value="{!selectlang}"/>
+    </apex:selectList>
+    
+    <apex:pageBlock title="Student Information">
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!submit}" value="Submit"/>
+      </apex:pageBlockButtons>
+
+      <apex:pageBlockSection showHeader="false" columns="2">
+        <apex:inputField value="{!stud.Name}" />
+        <apex:inputField value="{!stud.Roll_Number__c}" />
+        <apex:inputField value="{!stud.Gender__c}" />
+        <apex:inputField value="{!stud.Course_Applying_For__c}" />
+        <apex:inputField value="{!stud.HSC__c}" />
+        <apex:inputField value="{!stud.SSC__c}" />
+        <apex:inputField value="{!stud.Country__c}" />
+        <apex:inputField value="{!stud.State__c}" />
+        <apex:inputField value="{!stud.City__c}" />
+        <apex:pageMessage severity="info" strength="1" summary="{!$Label.Submit_message}"  rendered="{!if(flag=true,true,false)}"/>
+      </apex:pageBlockSection>
+
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>
