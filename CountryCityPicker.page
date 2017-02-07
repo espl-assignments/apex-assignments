@@ -1,0 +1,26 @@
+<apex:page controller="CountryCityPickerController">
+   <apex:form >
+      <apex:actionFunction name="rerenderCities" rerender="citiesSelectList" >
+          <apex:param name="firstParam" assignTo="{!country}" value="" />
+      </apex:actionFunction>
+
+   <table><tbody>
+      <tr>
+        <th>Country</th>
+          <td>
+             <apex:selectList id="country" styleclass="std" size="1" value="{!country}" onChange="rerenderCities(this.value)">
+                    <apex:selectOptions value="{!countriesSelectList}"/>
+             </apex:selectList>
+          </td>
+      </tr>
+      <tr id="city_input">
+        <th>Cities</th>
+          <td>
+            <apex:selectList id="citiesSelectList" styleclass="std" size="1" value="{!city}">
+                   <apex:selectOptions value="{!citiesSelectList}"/>
+            </apex:selectList>
+          </td>
+      </tr>
+   </tbody></table>
+   </apex:form>
+</apex:page>
