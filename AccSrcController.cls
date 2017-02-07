@@ -69,9 +69,9 @@ public with sharing class AccSrcController {
    	}
    	
 	@RemoteAction
-	public static Account delAccount(Id accId) {
+	public static boolean delAccount(Id accId) {
 		Account account1 = [SELECT Id, Name FROM Account WHERE Id = : accId ];
     	delete account1;
-    	return null;
+    	return true;
 	}
 }
