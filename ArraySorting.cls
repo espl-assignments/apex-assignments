@@ -21,20 +21,12 @@ public class ArraySorting{
 		
 		// Print the Maximum number in the array
 		Integer maxNo = descList[0];
-		for(Integer temp = 0 ; temp < descList.size() ; temp++){
-			if(descList[temp] > maxNo){
-				maxNo = descList[temp];
-			}
-		}
+
 		System.debug('Max Number: '+maxNo);
 		
 		// Print the Minimum number in the array
 		Integer minNo = values[0];
-		for(Integer temp = 0 ; temp < descList.size() ; temp++){
-			if(values[temp] < minNo){
-				minNo = values[temp];
-			}
-		}
+
 		System.debug('Min Number: '+minNo);
     	
     	//Print duplicates and its occurrences in the array
