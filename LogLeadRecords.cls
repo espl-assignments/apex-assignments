@@ -31,7 +31,7 @@ public class LogLeadRecords{
 			}
 			else{
 				for(Database.Error err : sr.getErrors()){
-					Log__c record = new Log__c(Error__c = 'Record data not properly inserted..');
+					Log__c record = new Log__c(Error__c = 'Error: '+err);
 					logs.add(record);
 				}
 				System.debug(logs);
