@@ -3,8 +3,8 @@
 public class AccountRecords{
 	public static void getAccountRecords(){
 		
-		for(Account accountlist : [SELECT Id,Name FROM Account WHERE CreatedDate = TODAY])
-			System.debug(accountlist);
+		List<Account> accountlist = [SELECT Id,Name FROM Account WHERE CreatedDate = TODAY];
+		System.debug(accountlist);
 	}
 }
 
