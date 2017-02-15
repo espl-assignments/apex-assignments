@@ -31,5 +31,6 @@ private class DisplayAccountTest {
         Test.setCurrentPageReference(pageRef);
         DisplayAccountController incontroller = new DisplayAccountController();
         incontroller.selectAccount();
+        system.assert(true,incontroller.selectAccount());
 	}
 }
