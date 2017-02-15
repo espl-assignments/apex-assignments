@@ -27,8 +27,17 @@ private class AccountCloneTest {
     	}
     	insert accountsList;
     	Test.stopTest();
-      	List<Account> accList = [SELECT Id FROM Account];  
-		System.assertEquals(accountsList.size(),counter);
-		System.assertEquals(accList.size(),200);       
-    }
+      	List<Account> accList = [SELECT Id, Name, BillingCity FROM Account where Id not in : accountsList];
+		System.assertEquals(accList.size(),counter);
+		Map<String, Account> accountNameToAccountMap = new Map<String, Account>();
+		for(Account account :accList){
+  			accountNameToAccountMap.put(account.Name, account);
+		}
+
+		for(Account oldAccount : accountsList){
+  			Account newAccount = accountNameToAccountMap.get(oldAccount.Name);
+  			System.assertEquals(newAccount.Name, oldAccount.Name);
+  			System.assertEquals(newAccount.BillingCity, oldAccount.BillingCity);
+    	}
+	}
 }
