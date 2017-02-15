@@ -11,19 +11,33 @@
  **************************************************************************************************/
 public with sharing class CheckDuplicateContactsHelper {
 	public void validateContact(List <Contact> contactlist){
-		List<Contact> contacts = [Select Phone, Email from Contact];
-		for (Contact c : contactlist){
-			for(Contact c1: contacts){
-				if(c1.Phone == c.Phone && c1.Email == c.Email){
-					c.addError('Contact cannot be created: Contact already exists with the same email and phone combination');
-				}
-				if(c1.Phone == c.Phone){
-					c.addError('Contact cannot be created: Contact already exists with the same phone');
-				}
-				if(c1.Email == c.Email){
-					c.addError('Contact cannot be created: Contact already exists with the same email');
-				}
+		Map <String, Contact> eMailMap = new Map <String, Contact> ();
+		Map <String, Contact> phoneMap = new Map <String, Contact> ();
+		for(Contact con : contactlist){
+			if((con.Email != null) && (eMailMap.containsKey(con.Email))){
+				con.Email.addError('Contact exists with same email address');
 			}
-		} 
+			
+			else{
+				eMailMap.put(con.Email,con);
+			}
+		}
+		
+		for(Contact con : contactlist){
+			if((con.Phone != null) && (phoneMap.containsKey(con.Phone))){
+				con.Phone.addError('Contact exists with same phone number');
+			}
+			
+			else{
+				phoneMap.put(con.Phone,con);
+			}
+		}
+		
+		for(Contact contactObj : [Select Email, Phone from Contact where Email In : eMailMap.keySet() AND Phone In : phoneMap.keySet()]){
+			Contact emailConObj = eMailMap.get(contactObj.Email);
+			Contact phoneConObj = phoneMap.get(contactObj.Phone);
+			emailConObj.addError('Contact with same email address and phone number already exists!');
+			phoneConObj.addError('Contact with same email address and phone number already exists!');
+		}
 	}  
 }
