@@ -33,6 +33,8 @@ private class SearchValueControllerTest {
         incontroller.searchString = 'test';
         incontroller.explore();
         incontroller.searchString.length();
+        
+        system.assertNotEquals(0,incontroller.searchString.length());
 	}
 	
 	  @isTest static void searchValueLeadTest() {
@@ -43,12 +45,13 @@ private class SearchValueControllerTest {
         PageReference pageRef = Page.SearchValuePage;
         Test.setCurrentPageReference(pageRef);
         SearchValueController incontroller = new SearchValueController();
-        incontroller.searchString = 'test';
-        incontroller.explore();
+        /*incontroller.searchString = 'test';
+        incontroller.explore();*/
         
         incontroller.searchString = 't';
         incontroller.explore();
         incontroller.searchString.length();
+        system.assertEquals(1,incontroller.searchString.length());
 	}
 	
 	@isTest static void searchValueOppTest() {
@@ -62,6 +65,7 @@ private class SearchValueControllerTest {
         incontroller.searchString = 'test';
         incontroller.explore();
         incontroller.searchString.length();
+        system.assertNotEquals(0,incontroller.searchString.length());
 	}
 	
 	  @isTest static void searchValueContactTest() {
@@ -72,11 +76,12 @@ private class SearchValueControllerTest {
         PageReference pageRef = Page.SearchValuePage;
         Test.setCurrentPageReference(pageRef);
         SearchValueController incontroller = new SearchValueController();
-        incontroller.searchString = 'test';
-        incontroller.explore();
+        /*incontroller.searchString = 'test';
+        incontroller.explore();*/
         
         incontroller.searchString = 't';
         incontroller.explore();
         incontroller.searchString.length();
+        system.assertEquals(1,incontroller.searchString.length());
 	}
 }
