@@ -21,7 +21,6 @@ private class SearchValueControllerTest {
 	}
 	
 	  @isTest static void searchValueLeadTest() {
-        
         Lead l = new Lead(FirstName = 'test' ,LastName='test',Company='abc',Status = 'Open - Not Contacted');
         insert l;
         
@@ -38,7 +37,6 @@ private class SearchValueControllerTest {
 	}
 	
 	@isTest static void searchValueOppTest() {
-        
         Opportunity opp = new Opportunity(Name='test',CloseDate= Date.newInstance(2015, 2, 1),StageName= 'Closed Won');
         insert opp;
         
