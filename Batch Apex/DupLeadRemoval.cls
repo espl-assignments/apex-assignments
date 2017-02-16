@@ -46,12 +46,12 @@ public with sharing class DupLeadRemoval implements Database.Batchable < sObject
 			for(Lead l : leadscope)
 			{
     			if(leadObj.contains(l.Email))
-    			{
+    			{	
         			dupList.add(l);	//If record with duplicate email is present add it to the duplicate record list.
     			}
     			else
     			{
-        			leadObj.add(l.Name);
+        			leadObj.add(l.Email);
     			}
 			}
 			System.debug(leadObj);
