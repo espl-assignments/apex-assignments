@@ -1,36 +1,42 @@
 /**
- * This class contains unit tests for validating the behavior of Apex classes
- * and triggers.
- *
- * Unit tests are class methods that verify whether a particular piece
- * of code is working properly. Unit test methods take no arguments,
- * commit no data to the database, and are flagged with the testMethod
- * keyword in the method definition.
- *
- * All test methods in an organization are executed whenever Apex code is deployed
- * to a production organization to confirm correctness, ensure code
- * coverage, and prevent regressions. All Apex classes are
- * required to have at least 75% code coverage in order to be deployed
- * to a production organization. In addition, all triggers must have some code coverage.
- * 
- * The @isTest class annotation indicates this class only contains test
- * methods. Classes defined with the @isTest annotation do not count against
- * the organization size limit for all Apex scripts.
- *
- * See the Apex Language Reference for more information about Testing and Code Coverage.
+Test class for DisplayAccountController
  */
 @isTest
 private class DisplayAccountTest {
 
    @isTest static void displayAccTest() {
-        Test.startTest();
-        Account acc = new Account(name='test');
+        
+        Account acc = new Account(Name='test', BillingCity = 'testcity', Phone = '1234560');
         insert acc;
-        test.stopTest();
+        Opportunity opp = new Opportunity(Name='testopp' ,CloseDate= Date.newInstance(2015, 2, 15) ,StageName= 'Closed Won' ,AccountId = acc.Id);
+        insert opp;
+        Contact con = new Contact(FirstName = 'contest' ,LastName='contest' ,Email = 'test@gmail.com' ,AccountId = acc.Id);
+        insert con;
+        
         PageReference pageRef = Page.DisplayAccount;
         Test.setCurrentPageReference(pageRef);
+        Test.startTest();
         DisplayAccountController incontroller = new DisplayAccountController();
         incontroller.selectAccount();
-        system.assert(true,incontroller.selectAccount());
+        Test.stopTest();
+        System.assertEquals([select id, Name from Account], incontroller.accountList);
+	}
+	
+	
+	@isTest static void displayNotAccTest() {
+        
+        Account acc = new Account(Name='test', BillingCity = 'testcity', Phone = '1234560');
+        Opportunity opp = new Opportunity(Name='testopp' ,CloseDate= Date.newInstance(2015, 2, 15) ,StageName= 'Closed Won' ,AccountId = acc.Id);
+        insert opp;
+        Contact con = new Contact(FirstName = 'contest' ,LastName='contest' ,Email = 'test@gmail.com' ,AccountId = acc.Id);
+        insert con;
+        
+        PageReference pageRef = Page.DisplayAccount;
+        Test.setCurrentPageReference(pageRef);
+        Test.startTest();
+        DisplayAccountController incontroller = new DisplayAccountController();
+        incontroller.selectAccount();
+        Test.stopTest();
+        System.assertEquals([select id, Name from Account], incontroller.accountList);
 	}
 }
