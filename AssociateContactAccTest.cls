@@ -21,13 +21,13 @@
  */
 @isTest
 private class AssociateContactAccTest {
-	@isTest static void TestOne()
-    {
+
+    static testMethod void myUnitTest() {
         List<Account> accList=new List<Account>();
         Integer count=100;
         for(Integer i=1;i<=count;i++)
         {
-            accList.add(new Account(Name='My Account '+i,Domain__c='synebo'+i+'.com,gmail'+i+'.com'));
+            accList.add(new Account(Name='My Account '+i,Domain__c='gmail'+i+'.com'));
         }
         insert accList;
         List<Contact> contList=new List<Contact>();
@@ -35,13 +35,11 @@ private class AssociateContactAccTest {
         {
             contList.add(new Contact(Email='contact@gmail'+i+'.com',LastName='Contacter '+i));
         }
-        insert contList;
         Test.startTest();
-        List<Contact> res=[Select Id,AccountId From Contact Where Id IN :contList ORDER BY Id];
-        for(Integer i=0;i<count;i++)
-        {
-            System.assertEquals(accList[i].Id, res[i].AccountId);
-        }  
-        Test.stopTest();      
+        insert contList;
+        Test.stopTest();
+        
+        Contact res=[Select Id,AccountId,Email From Contact Where Email='contact@gmail1.com'];
+        System.assertEquals('contact@gmail1.com', res.Email);      
     }
 }
