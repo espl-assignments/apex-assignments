@@ -13,31 +13,33 @@
  The association should happen real time as soon as a Contact record is created within the system. */
 
 public with sharing class AssociateContactAccountHelper {
-	public void associateContactToAccount(List<Contact> con){
-		List<String> contactEmaildomains = new List<String>();
+	public void associateContactToAccount(List<Contact> contactList){
 		
-        for(Contact contactlist:con)
-    	{
-        	contactEmaildomains.add(contactlist.Email.split('@').get(1));
-    	}
-    	
-        List<Account> accountlist = [SELECT Id, Domain__c FROM Account WHERE Domain__c IN :contactEmaildomains];
-        
-		Map<String, Id> domainsMap = new Map<String, Id>();
+		Map<String, List<Contact>> contactDomainToContactListMap = new Map<String, List<Contact>> ();
+		String domain;
+		for(Contact con :contactList){
+			domain = con.Email.split('@').get(1);
+			
+				if(contactDomainToContactListMap.containskey(domain)){
+     				contactDomainToContactListMap.get(domain).add(con);
+				}
+				else{
+     				contactDomainToContactListMap.put(domain, new List<Contact>{con});
+				}
+		}
+		
+		List<Account> accountlist = [SELECT Id, Domain__c FROM Account WHERE Domain__c =:domain];
+		Map<String, Id> accountDomainMap = new Map<String, Id>();
 		
 		for(Account acc: accountlist) 
         {
-        	domainsMap.put(acc.Domain__c, acc.Id);
+        	accountDomainMap.put(acc.Domain__c, acc.Id);
         }
         
-        for(Contact cont: con)
-        {
-        	String domain = cont.Email.split('@').get(1);
-        	
-            if(domainsMap.containsKey(domain)) 
-            {
-                cont.AccountId = domainsMap.get(domain);
-            }
-        } 
+        for(String accountDomain :accountDomainMap.keySet()){
+    		for(Contact cont :contactDomainToContactListMap.get(accountDomain)){
+        		cont.AccountId = accountDomainMap.get(accountDomain);
+    		}
+		}
 	}
 }
