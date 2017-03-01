@@ -1,0 +1,90 @@
+<apex:page showHeader="true" sidebar="true" controller="DynamicApexVFController">
+	<apex:form >
+		<apex:outputPanel >
+			<b> <apex:outputlabel value="Object Names: "/> </b>
+				<apex:selectList value="{!selectedObject}" size="1" >
+					<apex:selectOption itemLabel="Select Object" itemValue="Select Object"/>
+					<apex:selectOptions value="{!ObjectNames}" />
+					<apex:actionSupport event="onchange" rerender="myFields" status="status"/>
+				</apex:selectList>
+				<apex:actionStatus id="status">
+					<apex:facet name="start">
+						<div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;">
+							<div class="waitingHolder" style="top: 74.2px; width: 91px;">
+								<img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+								<span class="waitingDescription">Loading..</span>
+							</div>
+						</div>
+					</apex:facet>
+				</apex:actionStatus>
+				<br/> <br/>
+		</apex:outputPanel>
+		
+		<apex:outputPanel id="myFields">
+			<b><apex:outputlabel value="Fields "/> </b>
+			<br/>
+			<apex:selectList value="{!selectedField}" size="10" multiselect="true">
+				<apex:selectOptions value="{!ObjectFields}"/>
+			</apex:selectList>
+		</apex:outputPanel>
+		&nbsp;&nbsp;
+
+		<div style="Display :inline-block">
+			<apex:commandButton action="{!selectClicked}" status="status" reRender="fieldslist,myFields" value=">>"/>
+			&nbsp;&nbsp;
+			<br/> <br/>
+			<apex:commandButton action="{!unselectClicked}" status="status" value="<<" reRender="fieldslist"/> 
+			<br/> <br/> <br/> <br/>
+		</div>
+
+		<div style="Display :inline-block">
+			<apex:selectList id="fieldslist" value="{!rightselected}" multiselect="true"  size="10">
+				<apex:selectOptions value="{!SelectedValues}" />
+			</apex:selectList>
+		</div>
+		<br/> <br/>
+
+		<b><apex:outputText value="Maximum #  Records to Display"/></b> &nbsp;<br/>
+			<apex:selectList value="{!selectedLimit}" multiselect="false" size="1" >
+				<apex:selectOptions value="{!Limit}" />
+			</apex:selectList>
+		<br/> <br/>
+		
+		<b><apex:outputText value="Sort As"/></b> &nbsp;
+			<apex:selectRadio value="{!selectedSort}" >
+				<apex:selectOptions value="{!Sort}" />
+			</apex:selectRadio>
+
+		<center>
+			<apex:commandButton value="Execute Query" action="{!executeQuery}"  / >
+		</center>
+		<br/>
+
+		<div rendered="{!renderQuery}">
+			<apex:inputTextarea id="queryHolder" value="{!query}" cols="100" readonly="true" rendered="{!renderQuery}" />
+		</div>
+	
+		<br/> <br/>
+		
+		<apex:pageBlock id="querysection" rendered="{!renderQuery}">
+    		<center> 
+    			<b><apex:outputText value="{!selectedObject}"/> </b> 
+    		</center>
+    		<br/><br/>
+    		
+    		<apex:pageBlockTable value="{!result}" var="r">
+    			<apex:column width="15" >
+    				<apex:outputLink value="/{!r.id}" target="_blank"> View</apex:outputLink>
+    			</apex:column>
+    			<apex:repeat value="{!tempList}" var="rec">
+    				<apex:column value="{!r[rec]}" />
+				</apex:repeat>
+
+			</apex:pageBlockTable>
+
+		</apex:pageBlock>
+		<apex:outputPanel rendered="{!addError}">
+			<apex:pageMessage severity="info" strength="1" summary="Select Fields please!"  />
+		</apex:outputPanel>
+	</apex:form>
+</apex:page>
