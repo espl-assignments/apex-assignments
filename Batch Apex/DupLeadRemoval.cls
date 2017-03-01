@@ -21,8 +21,28 @@ public with sharing class DupLeadRemoval implements Database.Batchable < sObject
 		//Custom settings to decide the criteria to find the duplicate records.
 		DupLeadRemovalSettings__c dup = DupLeadRemovalSettings__c.getInstance(UserInfo.getUserID());
 	
+		//If Name and Email both are selected as the criteria to find the duplicate records.	
+		if(dup.Select_Name__c == true && dup.Select_Email__c == true ) {
+			for(Lead l : leadscope)
+			{
+    			if(leadObj.contains(l.Name) && leadObj.contains(l.Email))
+    			{
+        			dupList.add(l);	//If record with duplicate name and email is present add it to the duplicate record list.
+    			}
+    			else
+    			{
+        			leadObj.add(l.Name);
+        			leadObj.add(l.Email);
+    			}
+			}
+			System.debug(leadObj);
+			System.debug(dupList);
+			delete dupList;	//delete the list of duplicate records
+			System.debug(dupList);
+		}
+	
 		//If Name is selected as the criteria to find the duplicate records.
-		if(dup.Select_Name__c == true) {
+		else if(dup.Select_Name__c == true) {
 			for(Lead l : leadscope)
 			{
     			if(leadObj.contains(l.Name))
@@ -39,7 +59,6 @@ public with sharing class DupLeadRemoval implements Database.Batchable < sObject
 			delete dupList; //delete the list of duplicate records
 			System.debug(dupList);
 		}
-		
 		
 		//If Email is selected as the criteria to find the duplicate records.
 		else if(dup.Select_Email__c == true) {
@@ -58,27 +77,7 @@ public with sharing class DupLeadRemoval implements Database.Batchable < sObject
 			System.debug(dupList);
 			delete dupList; //delete the list of duplicate records
 			System.debug(dupList);
-		}
-
-		//If Name and Email both are selected as the criteria to find the duplicate records.
-		else if(dup.Select_Name__c == true && dup.Select_Email__c == true ) {
-			for(Lead l : leadscope)
-			{
-    			if(leadObj.contains(l.Name) && leadObj.contains(l.Email))
-    			{
-        			dupList.add(l);	//If record with duplicate name and email is present add it to the duplicate record list.
-    			}
-    			else
-    			{
-        			leadObj.add(l.Name);
-    			}
-			}
-			System.debug(leadObj);
-			System.debug(dupList);
-			delete dupList;	//delete the list of duplicate records
-			System.debug(dupList);
-		}
-		
+		}		
 	}
 	
 	public void finish(Database.BatchableContext bc) {
