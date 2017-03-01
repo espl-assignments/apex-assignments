@@ -1,81 +1,77 @@
 <apex:page controller="AccSrcController">
-	<apex:form >
-		<apex:image value="{!URLFOR($Resource.MyResources1,'/cloud.jpg')}" />
-		<apex:includeScript value="{!URLFOR($Resource.MyResources1,'/jquery-3.1.1.js')}" />
-		<apex:includeScript value="{!URLFOR($Resource.MyResources1,'/remotingDelete.js')}" />
-	
-		<apex:pageBlock title="Search Account" id="block">
-			<apex:inputText value="{!searchstring}" label="Input"/>   
-  				<apex:commandButton value="Search records" action="{!search}"/>
-  				<apex:commandButton value="Clear records" action="{!clear}"/>
-  			
-  				<apex:outputPanel title="" id="error" >
-     				<apex:pageMessages > </apex:pageMessages>
-     			</apex:outputPanel>
-     			
-     			<apex:pageblockTable value="{!accountList}" var="a1" rendered="{!IF(accountList != NULL && accountList.size > 0, TRUE ,FALSE)}"> 
-					<apex:column headerValue="Id" value="{!a1.Id}"/>
-					<apex:column >    
-               			<Button onclick="delAccountRemoting('{!a1.Id}')"> Delete </Button>	
-                  	</apex:column>
-    	 			<apex:column headerValue="Account Name">  
-      					<apex:outputlink value="https://ap1.salesforce.com/{!a1.id}"> {!a1.Name}
-      					</apex:outputlink>  
-   					</apex:column> 
-					<apex:column headerValue="Website" value="{!a1.Website}"/>
-					<apex:column headerValue="Phone" value="{!a1.Phone}"/>
-					<apex:column headerValue="Manage Contacts">  
-   						<apex:commandButton value="Manage Contacts">
-   						</apex:commandButton>
-   					</apex:column>
-   				</apex:pageblockTable>
-   			</apex:pageBlock>
-   			
-		<apex:pageBlock title="Account">
-			<table>
-				<tr>
-					<apex:repeat value="{!searchAlphabet}" var="sa">
-						<td> 
-							<apex:commandLink action="{!display}" reRender="myPage" >
-								<apex:param value="{!sa}" name="sas" assignTo="{!searchVar}"/> {!sa}
-							</apex:commandLink>
-						</td>
-					</apex:repeat>	
-				</tr>
-			</table>
-			<apex:outputpanel id="myPage" >
-				<apex:actionFunction name="display" action="{!DisplayMethod}" reRender="out"/>
-				
-				<div id ="showdata">
-					<apex:pageBlockTable value="{!showAccount}" var="a">
-						<apex:column headerValue="Id" value="{!a.Id}"/>
-						<apex:column headerValue="Name" value="{!a.Name}"/>
-						<apex:column headerValue="Website" value="{!a.Website}"/>
-						<apex:column headerValue="Phone" value="{!a.Phone}"/>
-						<apex:column >    
-               			<Button onclick="delAccountRemoting('{!a.Id}')"> Delete Account </Button>	
-                  	</apex:column>
-					</apex:pageBlockTable>
-				</div>
-				<div id="nodata" style="display:none;">
-				<p>
-				<b> No record selected!!</b>
-				</p>
-				</div>
-			</apex:outputpanel>	
-		</apex:pageBlock>
-	</apex:form>
-	<script type="text/javascript">
-					var sze = '{!sizes}';
-					sz = parseInt(sze);
-					if(sz > 0){
-						document.getElementById('showdata').style.display = "block";
-						document.getElementById('nodata').style.display = "none";
-					}
-					else{
-						document.getElementById('showdata').style.display = "none";
-						document.getElementById('nodata').style.display = "block";
-					}
-					
-				</script>
+    <apex:form >
+        <apex:image value="{!URLFOR($Resource.MyResource01,'/cloud.jpg')}"  width="200" height="200"/>
+        <apex:includeScript value="{!URLFOR($Resource.MyResource01,'/jquery-3.1.1.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.MyResource01,'/remotingDelete.js')}" />
+    
+        <apex:pageBlock title="Search Account" id="block">
+            <apex:inputText value="{!searchstring}" label="Input"/>   
+                <apex:commandButton value="Search records" action="{!search}"/>
+                <apex:commandButton value="Clear records" action="{!clear}"/>
+            
+                <apex:outputPanel title="" id="error" >
+                    <apex:pageMessages > </apex:pageMessages>
+                </apex:outputPanel>
+                
+                <apex:pageblockTable id="acctable" value="{!accountList}" var="a1" rendered="{!IF(accountList != NULL && accountList.size > 0, TRUE ,FALSE)}"> 
+                    <apex:column headerValue="Id" value="{!a1.Id}"/>
+
+                    <apex:column headerValue="Account Name">  
+                        <apex:outputlink value="$Site.BaseUrl/{!a1.id}"> {!a1.Name}
+                        </apex:outputlink>  
+                    </apex:column> 
+                    <apex:column headerValue="Website" value="{!a1.Website}"/>
+                    <apex:column headerValue="Phone" value="{!a1.Phone}"/>
+                    <apex:column headerValue="Manage Contacts">  
+                        <apex:commandButton value="Manage Contacts">
+                        </apex:commandButton>
+                    </apex:column>
+                    <apex:column headerValue="Delete">    
+                        <apex:commandLink onclick="delAccountRemoting('{!a1.Id}')" reRender="acctable"> Delete </apex:commandLink> 
+                    </apex:column>
+                </apex:pageblockTable>
+            </apex:pageBlock>
+            
+        <apex:pageBlock title="Account" id="accBlock">
+            <table>
+                <tr>
+                    <apex:repeat value="{!searchAlphabet}" var="sa">
+                        <td> 
+                            <apex:commandLink action="{!display}" reRender="myPage" >
+                                <apex:param value="{!sa}" name="sas" assignTo="{!searchVar}"/> {!sa}
+                            </apex:commandLink>
+                        </td>
+                    </apex:repeat>  
+                </tr>
+            </table>
+            <apex:outputpanel id="myPage" >
+                <apex:actionFunction name="display" action="{!DisplayMethod}" reRender="out"/>
+
+                    <apex:pageBlockTable value="{!showAccount}" var="a" id="acctab">
+                        <apex:column headerValue="Id" value="{!a.Id}"/>
+                        <apex:column headerValue="Account Name">  
+                        	<apex:outputlink value="{!$Site.BaseUrl}/{!a.Id}"> {!a.Name}
+                        </apex:outputlink>  
+                    	</apex:column> 
+                        <apex:column headerValue="Website" value="{!a.Website}"/>
+                        <apex:column headerValue="Phone" value="{!a.Phone}"/>
+                        <apex:column headerValue="Delete">    
+                        <apex:commandLink onclick="delAccountRemoting('{!a.Id}')" reRender="acctab"> Delete Account </apex:commandLink> 
+                    </apex:column>
+                    </apex:pageBlockTable>
+           
+            </apex:outputpanel> 
+        </apex:pageBlock>
+    </apex:form>
+    <script type="text/javascript">
+                    var sizeOfAccount = '{!sizes}';
+                    accSize = parseInt(sizeOfAccount);
+                    if(accSize > 0){
+                        document.getElementById('acctab').style.display = "block";
+                    }
+                    else{
+                        document.getElementById('acctab').style.display = "none";
+                    }
+                    
+                </script>
 </apex:page>
