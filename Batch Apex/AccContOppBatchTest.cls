@@ -5,16 +5,27 @@ Test class for AccContactOpportunities batch class
 private class AccContOppBatchTest {
 
      static testMethod void executeAccountBatch() {
-     	Account acc = new Account(name='test');
-        insert acc;
-        Opportunity opp = new Opportunity(Name='testopp' ,CloseDate= Date.newInstance(2015, 2, 15) ,StageName= 'Closed Won' ,Amount= 500 ,AccountId = acc.Id);
-        insert opp;
-        Contact con = new Contact(FirstName = 'contest' ,LastName='contest' ,Primarycontact__c = true, Email = 'test@gmail.com' ,AccountId = acc.Id);
-        insert con;
-        
+     	List<Account> accountSettings = AccContOppDataFactory.createRecords(1,1,1);
+     	
         Test.startTest();
         AccContactOpportunities aobatch = new AccContactOpportunities ();
 		Database.executeBatch(aobatch);
         Test.stopTest();
+        
+        List<Opportunity> opp = [SELECT Id,AccountId,Name,Amount FROM Opportunity WHERE AccountId =: accountSettings[0].Id];
+     	System.assertEquals( 1, opp.size());	
+     }
+     
+     
+     static testMethod void executeAccBatch() {
+		List<Account> accountSettings = AccContOppDataFactory.createRecords(1,1,0);
+     	
+        Test.startTest();
+        AccContactOpportunities aobatch = new AccContactOpportunities ();
+		Database.executeBatch(aobatch);
+        Test.stopTest();
+        
+        List<Opportunity> opp = [SELECT Id,AccountId,Name,Amount FROM Opportunity WHERE AccountId =: accountSettings[0].Id];
+     	System.assertEquals( 0, opp.size());	
      }
 }
