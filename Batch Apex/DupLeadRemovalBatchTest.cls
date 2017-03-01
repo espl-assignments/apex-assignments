@@ -40,6 +40,7 @@ private class DupLeadRemovalBatchTest {
     }
     
     static testMethod void leadDupCheck_Name_Email() {
+    	
     	DupLeadRemovalSettings__c dup = new DupLeadRemovalSettings__c ();
     	dup.Select_Name__c = true ;
     	dup.Select_Email__c = true ;
@@ -55,7 +56,8 @@ private class DupLeadRemovalBatchTest {
 		Test.stopTest();	
 		
 		Lead leads = [Select Id,Name,Email from Lead];
-		System.assert(leads.Name.contains('test'));
+		System.assert(leads.Name.contains('test2'));
+		System.assert(leads.Email.contains('test2@gmail.com'));
     }
     
 }
