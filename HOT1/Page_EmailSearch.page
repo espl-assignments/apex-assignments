@@ -1,0 +1,12 @@
+<apex:page renderAs="pdf" controller="Page_EmailSearchController">
+	<apex:form >
+		<b>Search Results: </b>
+		<apex:pageBlock >
+			<apex:repeat value="{!result}" var="r">
+				<apex:outputText value="{!r.Title__c}"/> <br/>
+        		<u> <apex:outputText value="/{!r.URL__c}"/> </u> <br/>
+        		<apex:outputText value="{!r.Description__c}"/> <br/> <br/>
+    		</apex:repeat>
+    	</apex:pageBlock>
+	</apex:form>
+</apex:page>
