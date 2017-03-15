@@ -1,0 +1,41 @@
+<apex:page showHeader="true" sidebar="true" standardController="UserSearchQuery__c" extensions="GoobleForceSearchController">
+    <apex:form >
+    	
+        <apex:pageBlock id="SearchResults">
+        	<b> New Search </b> <br/>
+            <apex:inputText value="{!searchstring}" label="Input"/>   
+            <apex:commandButton value="Search" action="{!searchText}" status="SearchStatus" rerender="Results">
+            </apex:commandButton>
+            <apex:actionStatus id="SearchStatus">
+					<apex:facet name="start">
+						<div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;">
+							<div class="waitingHolder" style="top: 74.2px; width: 91px;">
+								<img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+								<span class="waitingDescription">Loading..</span>
+							</div>
+						</div>
+					</apex:facet>
+				</apex:actionStatus>
+        </apex:pageBlock>
+        
+            <apex:pageBlock id="History">
+            	<b> Search History </b> <br/>
+                <apex:pageBlockTable value="{!queries}" var="a">
+                    <apex:column headerValue="Searched Queries">
+                        <apex:commandLink value="{!a.SearchText__c}" action="{!displayResult}" status="SearchStatus" rerender="Results" >
+                            <apex:param assignTo="{!searchid}" value="{!a.id}" name="{a.id}"/>
+                        </apex:commandLink>
+                    </apex:column>          
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+
+            <apex:pageBlock id="Results">
+                <apex:repeat value="{!resultQuery}" var="r">
+                    <apex:outputText value="{!r.Title__c}"/> <br/>
+                    <u> <apex:outputText value="/{!r.URL__c}"/> </u> <br/>
+                    <apex:outputText value="{!r.Description__c}"/><br/>
+                    <br/>
+                </apex:repeat>
+            </apex:pageBlock>
+    </apex:form>
+</apex:page>
